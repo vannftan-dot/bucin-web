@@ -3,29 +3,22 @@ let music = document.getElementById('bgMusic');
 let isPlaying = localStorage.getItem('musicPlaying') === 'true';
 let currentTime = parseFloat(localStorage.getItem('musicTime')) || 0;
 
-// Set waktu musik ke posisi terakhir kali di putar
 if (!isNaN(currentTime)) {
     music.currentTime = currentTime;
 }
 
-// Fungsi untuk langsung play saat halaman baru load
 window.addEventListener('DOMContentLoaded', () => {
     if (isPlaying) {
-        music.play().catch(e => {
-            // Kalau browser nge-blok, user harus klik tombol musik 1 kali
-            console.log("Menunggu 1 kali klik biar musik nyala");
-        });
+        music.play().catch(e => console.log("Menunggu 1 kali klik biar musik nyala"));
     }
 });
 
-// Simpan detik lagu setiap 0.5 detik biar presisi
 setInterval(() => {
     if(!music.paused) {
         localStorage.setItem('musicTime', music.currentTime);
     }
 }, 500);
 
-// Fungsi tombol play/pause
 function toggleMusic() {
     if (music.paused) {
         music.play();
@@ -36,15 +29,16 @@ function toggleMusic() {
     }
 }
 
-// 2. Efek Partikel Jatuh
+// 2. Efek Partikel Jatuh (Dibikin Ringan)
 function createParticle() {
     const p = document.createElement('div');
     p.classList.add('particle');
     p.innerText = Math.random() > 0.5 ? '❤️' : '✨';
     p.style.left = Math.random() * 100 + 'vw';
     p.style.fontSize = (Math.random() * 15 + 10) + 'px';
-    p.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    p.style.animationDuration = (Math.random() * 3 + 3) + 's'; // Diperlambat jatuhnya
     document.body.appendChild(p);
-    setTimeout(() => p.remove(), 5000);
+    setTimeout(() => p.remove(), 6000);
 }
-setInterval(createParticle, 300);
+// Muncul 1.5 detik sekali (sebelumnya 0.3 detik, bikin lemot)
+setInterval(createParticle, 1500);
